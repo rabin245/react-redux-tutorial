@@ -1,29 +1,23 @@
-import { useSelector } from "react-redux";
-import { connect } from "react-redux";
-import {
-  incrementCount,
-  decrementCount,
-  resetCount,
-  setCount,
-} from "../actions/countAction";
+import { useSelector, useDispatch } from "react-redux";
 
-const Counter = (props) => {
+const Counter = () => {
   const count = useSelector((state) => state.count);
+  const dispatch = useDispatch();
 
   const handleIncrement = () => {
-    props.incrementCount();
+    dispatch({ type: "INCREMENT" });
   };
 
   const handleDecrement = () => {
-    props.decrementCount();
+    dispatch({ type: "DECREMENT" });
   };
 
   const handleReset = () => {
-    props.resetCount();
+    dispatch({ type: "RESET" });
   };
 
   const handleSet = () => {
-    props.setCount(10);
+    dispatch({ type: "SET", payload: 10 });
   };
 
   return (
@@ -39,14 +33,4 @@ const Counter = (props) => {
   );
 };
 
-// export default Counter;
-// export default connect(null, { incrementCount, decrementCount, resetCount, setCount, })(Counter);
-
-const connectToStore = connect(null, {
-  incrementCount,
-  decrementCount,
-  resetCount,
-  setCount,
-});
-
-export default connectToStore(Counter);
+export default Counter;
