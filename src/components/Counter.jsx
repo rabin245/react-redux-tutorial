@@ -1,23 +1,29 @@
-import { useSelector, useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
+import {
+  decrementCounter,
+  resetCounter,
+  setCounter,
+  incrementCounterAsync,
+} from "../redux/actions/counterActions";
+import { getCounter } from "../redux/selectors/counterSelectors";
 
 const Counter = (props) => {
-  const count = useSelector((state) => state.count);
-  const dispatch = useDispatch();
+  const count = props.count;
 
   const handleIncrement = () => {
-    dispatch({ type: "INCREMENT" });
+    props.increment();
   };
 
   const handleDecrement = () => {
-    dispatch({ type: "DECREMENT" });
+    props.decrement();
   };
 
   const handleReset = () => {
-    dispatch({ type: "RESET" });
+    props.reset();
   };
 
   const handleSet = () => {
-    dispatch({ type: "SET", payload: 10 });
+    props.set();
   };
 
   const handleAsyncIncrement = () => {
@@ -27,7 +33,7 @@ const Counter = (props) => {
   return (
     <div>
       <h1>Counter</h1>
-      <p>{count.count}</p>
+      <p>{count}</p>
 
       <button onClick={handleIncrement}>Increment</button>
       <button onClick={handleAsyncIncrement}>Increment Async</button>
@@ -38,11 +44,21 @@ const Counter = (props) => {
   );
 };
 
-const asyncIncrement = () => {
-  return (dispatch) => {
-    setTimeout(() => dispatch({ type: "INCREMENT" }), 2000);
+const mapStateToProps = (state) => {
+  return {
+    count: getCounter(state),
+  };
+};
+
+const mapDispatchToProp = (dispatch) => {
+  return {
+    increment: () => dispatch({ type: "INCREMENT" }),
+    decrement: () => dispatch(decrementCounter()),
+    reset: () => dispatch(resetCounter()),
+    set: () => dispatch(setCounter()),
+    asyncIncrement: () => dispatch(incrementCounterAsync()),
   };
 };
 
 // export default Counter;
-export default connect(null, { asyncIncrement })(Counter);
+export default connect(mapStateToProps, mapDispatchToProp)(Counter);

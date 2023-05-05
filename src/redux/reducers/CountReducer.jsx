@@ -1,5 +1,6 @@
 const initialState = {
   count: 0,
+  test: "hell oworld",
 };
 
 const countReducer = (state = initialState, action) => {
