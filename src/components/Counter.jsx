@@ -6,6 +6,7 @@ import {
   incrementCounterAsync,
 } from "../redux/actions/counterActions";
 import { getCounter } from "../redux/selectors/counterSelectors";
+import { useRef } from "react";
 
 const Counter = (props) => {
   const count = props.count;
@@ -23,17 +24,20 @@ const Counter = (props) => {
   };
 
   const handleSet = () => {
-    props.set();
+    props.set(Number(countRef.current.value));
   };
 
   const handleAsyncIncrement = () => {
     props.asyncIncrement();
   };
 
+  const countRef = useRef(0);
+
   return (
     <div>
       <h1>Counter</h1>
       <p>{count}</p>
+      <input type="number" ref={countRef} />
 
       <button onClick={handleIncrement}>Increment</button>
       <button onClick={handleAsyncIncrement}>Increment Async</button>
@@ -55,7 +59,7 @@ const mapDispatchToProp = (dispatch) => {
     increment: () => dispatch({ type: "INCREMENT" }),
     decrement: () => dispatch(decrementCounter()),
     reset: () => dispatch(resetCounter()),
-    set: () => dispatch(setCounter()),
+    set: (value) => dispatch(setCounter(value)),
     asyncIncrement: () => dispatch(incrementCounterAsync()),
   };
 };
