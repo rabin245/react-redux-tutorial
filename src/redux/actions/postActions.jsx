@@ -1,10 +1,15 @@
 const fetchPosts = () => {
-  return (dispatch) => {
-    return fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((posts) => {
-        dispatch({ type: "FETCH_POSTS", payload: posts });
-      });
+  return async (dispatch) => {
+    dispatch({ type: "FETCH_POSTS_REQUEST" });
+
+    try {
+      const response = await fetch("http://localhost:3000/posts/");
+      const data = await response.json();
+      dispatch({ type: "FETCH_POSTS_SUCCESS", payload: data });
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "FETCH_POSTS_ERROR", payload: error });
+    }
   };
 };
 
